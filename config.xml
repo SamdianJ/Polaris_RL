@@ -1,0 +1,15 @@
+<Config>
+    <policy_name>TD3</policy_name>
+    <env_name>CartPole-v1</env_name>
+    <random_seed>1017</random_seed>
+    <gamma>0.99</gamma>
+    <policy_noise>0.2</policy_noise>
+    <policy_noise_clip>0.5</policy_noise_clip>
+    <reward_scale>1.0</reward_scale>
+    <net_dims>256,256</net_dims>
+    <learning_rate>0.001</learning_rate>
+    <soft_update_tau>0.005</soft_update_tau>
+    <policy_freq>2</policy_freq>
+    <batch_size>64</batch_size>
+    <buffer_size>1000000</buffer_size>
+</Config>
