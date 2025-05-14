@@ -14,7 +14,7 @@ class FileObject:
             print(f"Directory {path} does not exist.")
             print("switching to default path...")
             self.file_dir = os.path.realpath(__file__)
-        self.working_dir = os.path.join(self.file_dir, f"policy_{policy}_env{env_name}")
+        self.working_dir = os.path.join(self.file_dir, f"policy_{policy}_env_{env_name}")
         self.rb_dir = os.path.join(self.working_dir, "replay_buffer")
         self.model_dir = os.path.join(self.working_dir, "models")
         self.result_dir = os.path.join(self.working_dir, "results")
@@ -44,7 +44,8 @@ class Config:
         self.policy_name = 'TD3'
 
         '''Arguments for environment''' 
-        env_args = Env_Args(env_name="BipedalWalker-v3")
+        #env_args = Env_Args(env_name="BipedalWalker-v3")
+        env_args = Env_Args(env_name="Pendulum-v1")
         self.env_name = env_args()['env_name']
         self.state_dim = env_args()['state_dim']
         self.action_dim = env_args()['action_dim']
@@ -64,6 +65,7 @@ class Config:
         self.gamma = 0.99
 
         # for exploration action
+        self.exploration_noise = 0.1
         self.policy_noise = 0.2
         self.policy_noise_clip = 0.5
         if self.policy_name == 'TD3':
@@ -75,12 +77,15 @@ class Config:
 
         '''Arguments for training'''
         self.net_dims = [256, 256]
+        self.start_timesteps = 25000
+        self.eval_frequency = 5000
+        self.max_timesteps = 1000000
         self.learning_rate = 3e-4
         self.soft_update_tau = 5e-3
         self.policy_freq = 2
 
         '''Arguments for off-policy replay buffer'''
-        self.batch_size = int(64)
+        self.batch_size = int(256)
         self.buffer_size = int(1e6)
 
         '''device settings'''
@@ -120,6 +125,7 @@ class Config:
 
         # agents
         self.gamma             = float(get_text('gamma', '0.99'))
+        self.exploration_noise  = float(get_text('exploration_noise', '0.1'))
         self.policy_noise      = float(get_text('policy_noise', '0.2'))
         self.policy_noise_clip = float(get_text('policy_noise_clip', '0.5'))
         self.reward_scale      = float(get_text('reward_scale', '1.0'))
@@ -136,10 +142,14 @@ class Config:
         self.net_dims = [int(x) for x in net_dims_txt.split(',') if x]
 
         # training
+        self.max_timesteps      = int(get_text('max_timesteps', '1000000'))
+        self.eval_frequency    = int(get_text('eval_frequency', '5000'))
+        self.start_timesteps    = int(get_text('start_timesteps', '25000'))
+        self.policy_freq      = int(get_text('policy_freq', '2'))
         self.learning_rate    = float(get_text('learning_rate', '0.0003'))
         self.soft_update_tau  = float(get_text('soft_update_tau', '0.005'))
         self.policy_freq      = int(get_text('policy_freq', '2'))
-        self.batch_size       = int(get_text('batch_size', '64'))
+        self.batch_size       = int(get_text('batch_size', '256'))
         self.buffer_size      = int(get_text('buffer_size', '1000000'))
 
         # file object
@@ -150,7 +160,6 @@ class Config:
     def init_before_training(self):
         np.random.seed(self.random_seed)
         torch.manual_seed(self.random_seed)
-        torch.cuda.manual_seed_all(self.random_seed)
         random.seed(self.random_seed)
         torch.set_default_dtype(torch.float32)
         self.file_object.make_dir()
@@ -229,7 +238,7 @@ class ReplayBuffer:
             torch.FloatTensor(self.actions[ids]).to(self.device),
             torch.FloatTensor(self.rewards[ids]).to(self.device),
             torch.FloatTensor(self.undones[ids]).to(self.device),
-            torch.FloatTensor(self.next_state[ids + 1]).to(self.device), 
+            torch.FloatTensor(self.next_state[ids]).to(self.device), 
         )
     
     def save(self, filename: str):
