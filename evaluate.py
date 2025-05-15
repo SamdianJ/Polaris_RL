@@ -9,9 +9,8 @@ import utils
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--policy",    default="TD3", help="Policy to use: TD3, DDPG or OurDDPG")
-    parser.add_argument("--env",       default="BipedalWalker-v3", help="Gym env name")
+    parser.add_argument("--env",       default="Pendulum-v1", help="Gym env name")
     parser.add_argument("--seed",      type=int, default=0, help="Random seed")
-    parser.add_argument("--model",     default="TD3", help="TD3")
     parser.add_argument("--max_steps", type=int, default=200000, help="演示最多步数")
     args = parser.parse_args()
 

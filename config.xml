@@ -3,11 +3,15 @@
     <env_name>CartPole-v1</env_name>
     <random_seed>1017</random_seed>
     <gamma>0.99</gamma>
+    <exploration_noise>0.1</exploration_noise>
     <policy_noise>0.2</policy_noise>
     <policy_noise_clip>0.5</policy_noise_clip>
     <reward_scale>1.0</reward_scale>
-    <net_dims>512,512</net_dims>
-    <learning_rate>0.001</learning_rate>
+    <net_dims>256,256</net_dims>
+    <learning_rate>0.0003</learning_rate>
+    <start_timesteps>25000</start_timesteps>
+    <eval_frequency>5000</eval_frequency>
+    <max_timesteps>1000000</max_timesteps>
     <soft_update_tau>0.005</soft_update_tau>
     <policy_freq>2</policy_freq>
     <batch_size>256</batch_size>

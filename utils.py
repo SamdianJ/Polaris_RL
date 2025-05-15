@@ -44,8 +44,7 @@ class Config:
         self.policy_name = 'TD3'
 
         '''Arguments for environment''' 
-        #env_args = Env_Args(env_name="BipedalWalker-v3")
-        env_args = Env_Args(env_name="Pendulum-v1")
+        env_args = Env_Args(env_name="BipedalWalker-v3")
         self.env_name = env_args()['env_name']
         self.state_dim = env_args()['state_dim']
         self.action_dim = env_args()['action_dim']
@@ -156,6 +155,20 @@ class Config:
         self.file_object = FileObject(path=self.file_path,
                                       policy=self.policy_name,
                                       env_name=self.env_name)
+        
+    def re_eval_config(self):
+        '''Re-evaluate the config'''
+        env_args = Env_Args(env_name=self.env_name)
+        self.state_dim = env_args()['state_dim']
+        self.action_dim = env_args()['action_dim']
+        self.max_action = env_args()['max_action']
+
+        self.env_args = {
+            'env_name':    self.env_name,
+            'state_dim':   self.state_dim,
+            'action_dim':  self.action_dim,
+            'max_action':  self.max_action,
+        }
              
     def init_before_training(self):
         np.random.seed(self.random_seed)

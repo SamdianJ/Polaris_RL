@@ -3,6 +3,8 @@ import time
 import numpy as np
 import DDPG_TD3
 import utils
+import os
+from datetime import datetime
 
 if not hasattr(np, 'bool8'):
     np.bool8 = np.bool_
@@ -36,6 +38,9 @@ def explore_env(env_name, policy, seed,num_episodes=10):
 if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config()
+    #config.from_xml("config.xml")
+    #config.env_name = "Walker2d-v5"
+    #config.re_eval_config()
     print(config)
     
     print("==========================")
@@ -57,7 +62,9 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
-    start_time = time.time()    
+    start_time = time.time()  
+    result_path = os.path.join(config.file_object.result_dir, "seed-{}-".format(config.random_seed))  
+    rb_path = os.path.join(config.file_object.rb_dir, "seed-{}-".format(config.random_seed))
 
     for t in range(config.max_timesteps):
 
@@ -93,12 +100,13 @@ if __name__ == "__main__":
         if (t + 1) % config.eval_frequency == 0:
             print(f"Evaluating policy at timestep {t + 1}...")
             Evaluations.append(explore_env(config.env_name, policy, config.random_seed))
-            np.save(config.file_object.file_dir + "/Evaluations", Evaluations)
-            print(f"Evaluations saved to {config.file_object.file_dir}/Evaluations.npy")
+            np.save(result_path, Evaluations)
+            print(f"Evaluations saved to {result_path}/Evaluations.npy")
             print(f"Total Timesteps: {t + 1} - Time: {time.time() - start_time:.2f}s")
 
-    policy.save(config.file_object.file_dir + "/{}".format(config.policy_name))
-    print(f"Policy saved to {config.file_object.file_dir}/{config.policy_name}")
+    model_path = os.path.join(config.file_object.model_dir, "seed-{}-".format(config.random_seed))
+    policy.save(model_path)
+    print(f"Policy saved to {model_path}")
 
     env.close()
 
