@@ -11,7 +11,7 @@ class ActorSAC(nn.Module):
     def __init__(self, net_dims: List[int], state_dim: int, action_dim: int, max_action: float = 1.0):
         super().__init__()
         self.state_encoder = build_mlp(dims = [state_dim, *net_dims]) #encoder
-        self.mean_variance = build_mlp(dims = [*net_dims[-1], action_dim * 2]) #decoder for mean and variance
+        self.mean_variance = build_mlp(dims = [net_dims[-1], action_dim * 2]) #decoder for mean and variance
         layer_init_with_orthogonal(self.mean_variance[-1], gain=0.01)
 
     def forward(self, state):
@@ -43,7 +43,7 @@ class AgentSAC(AgentBase):
         super().__init__(config)       
 
         init_alpha = config.alpha
-        self.log_alpha = nn.Parameter(torch.Tensor(np.log(init_alpha), device=self.device))
+        self.log_alpha = nn.Parameter(torch.tensor(np.log(init_alpha), device=self.device))
         self.target_entropy = -config.action_dim if target_entropy is None else target_entropy
         self.actor = ActorSAC(config.net_dims, config.state_dim, config.action_dim, config.max_action).to(self.device)
         self.critic = CriticTwin(self.net_dims, self.state_dim, self.action_dim).to(self.device)
@@ -81,20 +81,24 @@ class AgentSAC(AgentBase):
         self.critic_optim.step()
  
         with torch.no_grad():
-            self.log_alpha.data.clamp_(16, 2)
+            self.log_alpha.data.clamp_(-16, 2)
 
         alpha = self.log_alpha.exp().detach()
 
+
+
+        # optimize the actor and alpha
+        new_action, new_log_prob = self.actor.sample(state)
+
         # optimize alpha
-        alpha_loss = -(self.log_alpha * (log_prob + self.target_entropy).detach()).mean()
+        alpha_loss = -(self.log_alpha * (new_log_prob + self.target_entropy).detach()).mean()
         self.alpha_optim.zero_grad()
         alpha_loss.backward()
         self.alpha_optim.step()
 
-        # optimize the actor
-        new_action, log_prob = self.actor.sample(state)
+        # optimize actor
         new_q1, new_q2 = self.critic(state, new_action)
-        actor_loss = (alpha * log_prob - torch.min(new_q1, new_q2)).mean()
+        actor_loss = (alpha * new_log_prob - torch.min(new_q1, new_q2)).mean()
         self.actor_optim.zero_grad()
         actor_loss.backward()
         self.actor_optim.step()
