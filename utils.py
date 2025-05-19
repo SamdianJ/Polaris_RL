@@ -169,6 +169,9 @@ class Config:
             'action_dim':  self.action_dim,
             'max_action':  self.max_action,
         }
+        self.file_object = FileObject(path=self.file_path,
+                                      policy=self.policy_name,
+                                      env_name=self.env_name)
              
     def init_before_training(self):
         np.random.seed(self.random_seed)

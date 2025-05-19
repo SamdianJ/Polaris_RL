@@ -39,8 +39,12 @@ if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config()
     #config.from_xml("config.xml")
-    #config.env_name = "Walker2d-v5"
-    #config.re_eval_config()
+    config.env_name = "Humanoid-v5"
+    config.max_timesteps = 2000000
+    config.net_dims = [512,512]
+    config.soft_update_tau = 0.002
+    config.learning_rate = 1e-4
+    config.re_eval_config()
     print(config)
     
     print("==========================")

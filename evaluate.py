@@ -7,24 +7,22 @@ import os
 import utils
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--policy",    default="TD3", help="Policy to use: TD3, DDPG or OurDDPG")
-    parser.add_argument("--env",       default="Pendulum-v1", help="Gym env name")
-    parser.add_argument("--seed",      type=int, default=0, help="Random seed")
-    parser.add_argument("--max_steps", type=int, default=200000, help="演示最多步数")
-    args = parser.parse_args()
+    print(gym.envs.registry.keys())
+    policy_name = "TD3"
+    env_name = "Humanoid-v5"
+    seed = 0
+    max_steps = 1000
 
-    # 创建渲染环境
-    env = gym.make(args.env, render_mode="human")
-    env.reset(seed=args.seed)
-    env.action_space.seed(args.seed)
-
-    # 环境维度
-    state_dim  = env.observation_space.shape[0]
-    action_dim = env.action_space.shape[0]
-    max_action = float(env.action_space.high[0])
+    #creat evaluation env
+    env = gym.make(env_name, render_mode="human")
+    env.reset(seed = seed)
+    env.action_space.seed(seed)
 
     config = utils.Config()
+    if env_name == "Humanoid-v5":
+        config.net_dims = [512, 512]
+    config.env_name = env_name
+    config.re_eval_config()
     policy = DDPG_TD3.AgentTD3(config)
 
     # 加载参数
@@ -32,12 +30,13 @@ def main():
     #model_path = os.path.join(os.path.realpath(__file__), model_name)
     #print(f"Loading model from: {model_path}")
     #policy.load("policy_TD3_envBipedalWalker-v3/models/TD3")
-    policy.load("TD3")
+
+    policy.load("policy_{}_env_{}/models/seed-{}-".format(policy_name, env_name, seed))
 
     # 演示运行
     obs, _ = env.reset()
     total_reward = 0.0
-    for t in range(args.max_steps):
+    for t in range(max_steps):
         # 通过 policy.select_action 获取动作
         action = policy.select_action(np.array(obs))
 
