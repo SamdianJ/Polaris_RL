@@ -40,8 +40,7 @@ if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config('SAC')
     #config.from_xml("config.xml")
-    config.env_name = "Ant-v5"
-    config.max_timesteps = 500000
+    config.env_name = "Humanoid-v5"
     if config.env_name == "Humanoid-v5":
         config.max_timesteps = 2000000
         config.net_dims = [512,512]
