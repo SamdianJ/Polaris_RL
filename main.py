@@ -2,6 +2,7 @@ import gymnasium as gym
 import time
 import numpy as np
 import DDPG_TD3
+import SAC
 import utils
 import os
 from datetime import datetime
@@ -37,13 +38,15 @@ def explore_env(env_name, policy, seed,num_episodes=10):
 
 if __name__ == "__main__":
     print(gym.envs.registry.keys())
-    config = utils.Config()
+    config = utils.Config('SAC')
     #config.from_xml("config.xml")
-    config.env_name = "Humanoid-v5"
-    config.max_timesteps = 2000000
-    config.net_dims = [512,512]
-    config.soft_update_tau = 0.002
-    config.learning_rate = 1e-4
+    config.env_name = "Ant-v5"
+    config.max_timesteps = 500000
+    if config.env_name == "Humanoid-v5":
+        config.max_timesteps = 2000000
+        config.net_dims = [512,512]
+        config.soft_update_tau = 0.002
+        config.learning_rate = 1e-4
     config.re_eval_config()
     print(config)
     
@@ -58,7 +61,8 @@ if __name__ == "__main__":
     config.init_before_training()
 
     replay_buffer = utils.ReplayBuffer(config.buffer_size, config.state_dim, config.action_dim)
-    policy = DDPG_TD3.AgentTD3(config)
+    #policy = DDPG_TD3.AgentTD3(config)
+    policy = SAC.AgentSAC(config)
 
     Evaluations = [explore_env(config.env_name, policy, config.random_seed)]
 

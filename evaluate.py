@@ -2,14 +2,15 @@ import gymnasium as gym
 import time
 import numpy as np
 import DDPG_TD3
+import SAC
 import argparse
 import os
 import utils
 
 def main():
     print(gym.envs.registry.keys())
-    policy_name = "TD3"
-    env_name = "Humanoid-v5"
+    policy_name = "SAC"
+    env_name = "Ant-v5"
     seed = 0
     max_steps = 1000
 
@@ -18,12 +19,16 @@ def main():
     env.reset(seed = seed)
     env.action_space.seed(seed)
 
-    config = utils.Config()
+    config = utils.Config(policy_name)
     if env_name == "Humanoid-v5":
         config.net_dims = [512, 512]
     config.env_name = env_name
     config.re_eval_config()
-    policy = DDPG_TD3.AgentTD3(config)
+
+    if policy_name == 'TD3':
+        policy = DDPG_TD3.AgentTD3(config)
+    elif policy_name == 'SAC':
+        policy = SAC.AgentSAC(config)
 
     # 加载参数
     #model_name = "TD3"

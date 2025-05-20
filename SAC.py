@@ -15,7 +15,7 @@ class ActorSAC(nn.Module):
         self.max_action = max_action
         self.state_encoder = build_mlp(dims = [state_dim, *net_dims]) #encoder
         self.mean_variance = build_mlp(dims = [net_dims[-1], action_dim * 2]) #decoder for mean and variance
-        layer_init_with_orthogonal(self.mean_variance[-1], gain=0.01)
+        layer_init_with_orthogonal(self.mean_variance[-1], std=0.01)
 
     def forward(self, state):
         state_code = self.state_encoder(state)
@@ -132,5 +132,20 @@ class AgentSAC(AgentBase):
             target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
 
         return critic_loss.item(), actor_loss.item()
+    
+    def save(self, filename: str):
+        torch.save(self.actor.state_dict(), filename + "sac_actor")
+        torch.save(self.critic.state_dict(), filename + "sac_critic")
+        torch.save(self.actor_optim.state_dict(), filename + "sac_actor_optimizer")
+        torch.save(self.critic_optim.state_dict(), filename + "sac_critic_optimizer")
+
+    def load(self, filename: str):
+        self.actor.load_state_dict(torch.load(filename + "sac_actor"))
+        self.critic.load_state_dict(torch.load(filename + "sac_critic"))
+
+        self.critic_target = copy.deepcopy(self.critic)
+
+        self.actor_optim.load_state_dict(torch.load(filename + "sac_actor_optimizer"))
+        self.critic_optim.load_state_dict(torch.load(filename + "sac_critic_optimizer"))
 
     

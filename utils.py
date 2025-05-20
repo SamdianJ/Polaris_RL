@@ -39,9 +39,9 @@ class FileObject:
             os.makedirs(self.result_dir)
 
 class Config:
-    def __init__(self, xml = None):
+    def __init__(self, policy = 'TD3', xml = None):
         '''Arguments for policy'''
-        self.policy_name = 'TD3'
+        self.policy_name = policy
 
         '''Arguments for environment''' 
         env_args = Env_Args(env_name="BipedalWalker-v3")
@@ -73,6 +73,7 @@ class Config:
 
         # for SAC
         self.reward_scale = 1.0 
+        self.alpha = 0.2
 
         '''Arguments for training'''
         self.net_dims = [256, 256]
@@ -128,6 +129,7 @@ class Config:
         self.policy_noise      = float(get_text('policy_noise', '0.2'))
         self.policy_noise_clip = float(get_text('policy_noise_clip', '0.5'))
         self.reward_scale      = float(get_text('reward_scale', '1.0'))
+        self.alpha             = float(get_text('alpha', '0.2'))
 
         if self.policy_name == 'TD3':
             self.policy_noise = self.policy_noise * self.max_action
