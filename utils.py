@@ -65,6 +65,7 @@ class Config:
 
         # for exploration action
         self.exploration_noise = 0.1
+        self.noise_decay = 0.999 #for enhanced convergence
         self.policy_noise = 0.2
         self.policy_noise_clip = 0.5
         if self.policy_name == 'TD3':
@@ -126,6 +127,7 @@ class Config:
         # agents
         self.gamma             = float(get_text('gamma', '0.99'))
         self.exploration_noise  = float(get_text('exploration_noise', '0.1'))
+        self.noise_decay  = float(get_text('noise_decay', '0.999'))
         self.policy_noise      = float(get_text('policy_noise', '0.2'))
         self.policy_noise_clip = float(get_text('policy_noise_clip', '0.5'))
         self.reward_scale      = float(get_text('reward_scale', '1.0'))

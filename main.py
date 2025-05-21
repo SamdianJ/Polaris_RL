@@ -6,6 +6,7 @@ import SAC
 import utils
 import os
 from datetime import datetime
+from reward import BipedalWalkerHardcore_RewardShaping
 
 if not hasattr(np, 'bool8'):
     np.bool8 = np.bool_
@@ -40,12 +41,20 @@ if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config('SAC')
     #config.from_xml("config.xml")
-    config.env_name = "Humanoid-v5"
+    config.env_name = "BipedalWalkerHardcore-v3"
+   
     if config.env_name == "Humanoid-v5":
         config.max_timesteps = 2000000
         config.net_dims = [512,512]
         config.soft_update_tau = 0.002
         config.learning_rate = 1e-4
+
+    if config.env_name == "BipedalWalkerHardcore-v3":
+        config.max_timesteps = 1000000
+        config.net_dims = [256,256]
+        config.soft_update_tau = 0.005
+        config.learning_rate = 1e-4
+        reward_shaping = BipedalWalkerHardcore_RewardShaping(config.env_name, shaping_scale=0.1)
     config.re_eval_config()
     print(config)
     
@@ -87,7 +96,20 @@ if __name__ == "__main__":
 
         next_state, reward, terminated, truncated, _ = env.step(action)
         done = terminated or truncated
+
         done_bool = float(done) if episode_timesteps < env._max_episode_steps else 0
+
+        if config.env_name == "BipedalWalkerHardcore-v3":
+            #'''Trick1 for BipedalWalkerHardCore: done or dead
+            if (reward <= -100):
+                done_bool = done_bool
+            else:
+                done_bool = 0
+            #'''
+
+            #'''Trick2 for BipedalWalkerHardCore
+            reward_shaping.apply(state, reward)
+            #'''
 
         replay_buffer.add(state, action, reward, done_bool, next_state)
 

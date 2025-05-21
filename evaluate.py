@@ -35,7 +35,7 @@ All environments:
 def main():
     print(gym.envs.registry.keys())
     policy_name = "SAC"
-    env_name = "Humanoid-v5"
+    env_name = "BipedalWalkerHardcore-v3"
     seed = 0
     max_steps = 1000
 
