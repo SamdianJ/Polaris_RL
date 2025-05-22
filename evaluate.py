@@ -34,8 +34,8 @@ All environments:
 
 def main():
     print(gym.envs.registry.keys())
-    policy_name = "TD3"
-    env_name = "Hopper-v5"
+    policy_name = "SAC"
+    env_name = "HumanoidStandup-v5"
     seed = 0
     max_steps = 1000
 
@@ -45,7 +45,7 @@ def main():
     env.action_space.seed(seed)
 
     config = utils.Config(policy_name)
-    if env_name == "Humanoid-v5":
+    if env_name == "Humanoid-v5" or env_name == "HumanoidStandup-v5":
         config.net_dims = [512, 512]
     config.env_name = env_name
     config.re_eval_config()

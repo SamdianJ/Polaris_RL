@@ -41,11 +41,17 @@ if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config('SAC')
     #config.from_xml("config.xml")
-    config.env_name = "Hopper-v5"
+    config.env_name = "HumanoidStandup-v5"
     config.max_timesteps = 500000
    
     if config.env_name == "Humanoid-v5":
         config.max_timesteps = 2000000
+        config.net_dims = [512,512]
+        config.soft_update_tau = 0.002
+        config.learning_rate = 1e-4
+
+    if config.env_name == "HumanoidStandup-v5":
+        config.max_timesteps = 800000
         config.net_dims = [512,512]
         config.soft_update_tau = 0.002
         config.learning_rate = 1e-4
