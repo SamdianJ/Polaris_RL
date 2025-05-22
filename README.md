@@ -1,1 +1,1 @@
-This is deep reinforcement learning package designed for DRL tasks.
+This is a deep reinforcement learning package designed for physical animation tasks.
