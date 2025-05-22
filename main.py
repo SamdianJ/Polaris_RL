@@ -41,7 +41,8 @@ if __name__ == "__main__":
     print(gym.envs.registry.keys())
     config = utils.Config('SAC')
     #config.from_xml("config.xml")
-    config.env_name = "BipedalWalkerHardcore-v3"
+    config.env_name = "Hopper-v5"
+    config.max_timesteps = 500000
    
     if config.env_name == "Humanoid-v5":
         config.max_timesteps = 2000000
@@ -69,8 +70,11 @@ if __name__ == "__main__":
     config.init_before_training()
 
     replay_buffer = utils.ReplayBuffer(config.buffer_size, config.state_dim, config.action_dim)
-    #policy = DDPG_TD3.AgentTD3(config)
-    policy = SAC.AgentSAC(config)
+    
+    if config.policy_name == 'TD3':
+        policy = DDPG_TD3.AgentTD3(config)
+    elif config.policy_name == 'SAC':
+        policy = SAC.AgentSAC(config)
 
     Evaluations = [explore_env(config.env_name, policy, config.random_seed)]
 
@@ -108,7 +112,7 @@ if __name__ == "__main__":
             #'''
 
             #'''Trick2 for BipedalWalkerHardCore
-            reward_shaping.apply(state, reward)
+            reward = reward_shaping.apply(state, reward)
             #'''
 
         replay_buffer.add(state, action, reward, done_bool, next_state)
