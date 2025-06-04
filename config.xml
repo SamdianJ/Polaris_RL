@@ -1,19 +1,46 @@
-<Config>
-    <policy_name>TD3</policy_name>
-    <env_name>CartPole-v1</env_name>
-    <random_seed>1017</random_seed>
-    <gamma>0.99</gamma>
-    <exploration_noise>0.1</exploration_noise>
-    <policy_noise>0.2</policy_noise>
-    <policy_noise_clip>0.5</policy_noise_clip>
-    <reward_scale>1.0</reward_scale>
-    <net_dims>256,256</net_dims>
-    <learning_rate>0.0003</learning_rate>
-    <start_timesteps>25000</start_timesteps>
-    <eval_frequency>5000</eval_frequency>
-    <max_timesteps>1000000</max_timesteps>
-    <soft_update_tau>0.005</soft_update_tau>
-    <policy_freq>2</policy_freq>
-    <batch_size>256</batch_size>
-    <buffer_size>1000000</buffer_size>
-</Config>
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <!-- Policy configuration -->
+    <policy name="PPO" />
+    
+    <!-- Environment settings -->
+    <environment name="BipedalWalker-v3" num_envs="8" />
+    
+    <!-- Random seed -->
+    <random_seed>42</random_seed>
+    
+    <!-- Agent configuration -->
+    <agent gamma="0.99">
+        <noise exploration="0.1" decay="0.999" policy="0.2" clip="0.5" />
+        <sac reward_scale="1.0" alpha="0.2" />
+    </agent>
+    
+    <!-- Training parameters -->
+    <training start_timesteps="25000" 
+              eval_frequency="5000" 
+              max_timesteps="1000000" 
+              learning_rate="3e-4"
+              soft_update_tau="5e-3"
+              policy_freq="2">
+        <network dimensions="256, 256" />
+    </training>
+    
+    <!-- Off-policy buffer settings -->
+    <off_policy batch_size="256" buffer_size="1000000" />
+    
+    <!-- On-policy settings -->
+    <on_policy exploration_steps="2048" 
+               minibatch_size="32"
+               num_epochs="10">
+        <ppo clip_coef="0.2" 
+             entropy_coef="0.01"
+             value_loss_coef="0.5"
+             max_grad_norm="0.5" />
+    </on_policy>
+    
+    <!-- Device settings -->
+    <device cuda="true" />
+    
+    <!-- Logging settings -->
+    <logging wandb="false" tensorboard="true" />
+</config>

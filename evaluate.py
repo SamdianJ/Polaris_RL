@@ -6,6 +6,7 @@ import SAC
 import argparse
 import os
 import utils
+import PPO
 
 '''
 All environments:
@@ -34,8 +35,8 @@ All environments:
 
 def main():
     print(gym.envs.registry.keys())
-    policy_name = "SAC"
-    env_name = "HumanoidStandup-v5"
+    policy_name = "PPO"
+    env_name = "Hopper-v5"
     seed = 0
     max_steps = 1000
 
@@ -54,6 +55,8 @@ def main():
         policy = DDPG_TD3.AgentTD3(config)
     elif policy_name == 'SAC':
         policy = SAC.AgentSAC(config)
+    elif policy_name == 'PPO':
+        policy = PPO.AgentPPO(config)
 
     # 加载参数
     #model_name = "TD3"
