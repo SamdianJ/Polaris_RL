@@ -1,0 +1,19 @@
+{"time":"2025-06-06T22:58:49.098598879+08:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/yuting/robotic/demo/wandb/offline-run-20250606_225848-zzvjkyqa/logs/debug-core.log"}
+{"time":"2025-06-06T22:58:49.242933621+08:00","level":"WARN","msg":"GraphQL client is nil, skipping feature loading"}
+{"time":"2025-06-06T22:58:49.243060622+08:00","level":"INFO","msg":"stream: created new stream","id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:49.243089023+08:00","level":"INFO","msg":"stream: started","id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:49.243125323+08:00","level":"INFO","msg":"writer: Do: started","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:49.243148023+08:00","level":"INFO","msg":"handler: started","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:49.243193524+08:00","level":"INFO","msg":"sender: started","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:49.245711751+08:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-06T22:58:49.359781369+08:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-06T22:58:49.35983387+08:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-06T22:58:50.360842862+08:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-06-06T22:58:59.340808487+08:00","level":"WARN","msg":"tensorboard: no root directory","error":"timed out after 10s"}
+{"time":"2025-06-06T22:58:59.341264792+08:00","level":"INFO","msg":"tensorboard: tracking new log directory","rootDir":{},"logDir":"LocalOrCloudPath(LocalPath=\"/home/yuting/robotic/demo/hopper_ppo_results/HopperPPO_Experiment_Hopper-v5_2025-06-06_22-58-45\")","namespace":""}
+{"time":"2025-06-06T22:58:59.343236912+08:00","level":"INFO","msg":"tensorboard: saving file","fileLocation":"/home/yuting/robotic/demo/hopper_ppo_results/HopperPPO_Experiment_Hopper-v5_2025-06-06_22-58-45/events.out.tfevents.1749221929.JIANGYUTINGdev.4051449.0","runPath":"hopper_ppo_results/HopperPPO_Experiment_Hopper-v5_2025-06-06_22-58-45/events.out.tfevents.1749221929.JIANGYUTINGdev.4051449.0"}
+{"time":"2025-06-06T22:58:59.359815885+08:00","level":"INFO","msg":"stream: closing","id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:59.360076888+08:00","level":"INFO","msg":"handler: closed","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:59.360118489+08:00","level":"INFO","msg":"writer: Close: closed","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:59.36023979+08:00","level":"INFO","msg":"sender: closed","stream_id":"zzvjkyqa"}
+{"time":"2025-06-06T22:58:59.360396892+08:00","level":"INFO","msg":"stream: closed","id":"zzvjkyqa"}

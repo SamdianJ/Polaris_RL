@@ -1,0 +1,41 @@
+{
+  "os": "Linux-6.6.87.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "python": "CPython 3.12.9",
+  "startedAt": "2025-06-07T14:56:36.614805Z",
+  "program": "/home/yuting/robotic/demo/GymEnv/train.py",
+  "codePath": "GymEnv/train.py",
+  "git": {
+    "remote": "https://github.com/SamdianJ/Polaris_RL.git",
+    "commit": "0842006b4fdfe3de7c3e274578139708d41fe789"
+  },
+  "root": "/home/yuting/robotic/demo",
+  "host": "JIANGYUTINGdev",
+  "executable": "/home/yuting/anaconda3/envs/robotics/bin/python",
+  "codePathLocal": "GymEnv/train.py",
+  "cpu_count": 6,
+  "cpu_count_logical": 12,
+  "gpu": "NVIDIA GeForce RTX 3060",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1081101176832",
+      "used": "57354903552"
+    }
+  },
+  "memory": {
+    "total": "16635879424"
+  },
+  "cpu": {
+    "count": 6,
+    "countLogical": 12
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 3060",
+      "memoryTotal": "12884901888",
+      "architecture": "Ampere",
+      "uuid": "GPU-f221e221-bb7a-4974-d3bc-23769a3190fd"
+    }
+  ],
+  "cudaVersion": "12.8"
+}
