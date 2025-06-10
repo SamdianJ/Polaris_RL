@@ -4,10 +4,12 @@ import numpy as np
 
 # --- Minimal VecEnv for a single environment ---
 class GymVecEnv:
-    def __init__(self, env_name, device='cpu'):
-        self.env = gym.make(env_name, render_mode=None) # Specify render_mode if needed by env
+    def __init__(self, env_name, device='cpu', render_mode=None):
+        # Initialize the Gym environment with render mode
+        self.env = gym.make(env_name, render_mode=render_mode)
         self.num_envs = 1
         self.device = device
+        self.render_mode = render_mode
 
         obs_space = self.env.observation_space
         action_space = self.env.action_space
@@ -71,6 +73,13 @@ class GymVecEnv:
 
     def get_privileged_observations(self):
         return None
+    
+    def render(self):
+        assert self.num_envs == 1, "GymVecEnv only supports a single environment for rendering."
+        if self.render_mode == 'human':
+            self.env.render()
+        else:
+            pass
 
     def close(self):
         self.env.close()

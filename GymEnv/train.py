@@ -34,11 +34,11 @@ def get_hopper_v5_train_cfg():
             "gamma": 0.99,                  # Discount factor
             "lam": 0.95,                    # GAE lambda parameter
             "value_loss_coef": 0.5,
-            "entropy_coef": 0.0,          # Small entropy bonus to encourage exploration
+            "entropy_coef": 0.01,          # Small entropy bonus to encourage exploration
             "learning_rate": 3e-4,          # Common starting learning rate
             "max_grad_norm": 0.5,
             "use_clipped_value_loss": True,
-            "schedule": 'fixed',           # Linear decay of learning rate is often good
+            "schedule": 'adaptive',           # Linear decay of learning rate is often good
                                             # (ensure your PPO impl. supports this)
                                             # If not, 'fixed' or 'adaptive' are alternatives.
             "desired_kl": 0.01,             # Target KL for adaptive LR schedule (if used)
@@ -98,7 +98,7 @@ def main_test_runner():
         )
 
         # 5. Start learning
-        num_learning_iterations = 1000
+        num_learning_iterations = 2000
         print(f"Starting learning for {num_learning_iterations} iterations...")
         runner.train(num_learning_iterations=num_learning_iterations, init_at_random_ep_len=False)
         print("Learning finished.")
